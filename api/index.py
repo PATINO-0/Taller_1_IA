@@ -1,5 +1,8 @@
+from typing import Any
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, ValidationError
 
 from backend.knapsack.knapsack_service import KnapsackService
 from backend.n_queens.n_queens_service import NQueensService
@@ -49,12 +52,95 @@ scheduling_service = CourseSchedulingService()
 knapsack_service = KnapsackService()
 
 
+def validate_gateway_payload(
+    model: type[BaseModel],
+    payload: dict[str, Any],
+) -> BaseModel:
+    try:
+        return model.model_validate(payload)
+    except ValidationError as error:
+        raise HTTPException(
+            status_code=422,
+            detail=error.errors(include_url=False),
+        ) from error
+
+
 @app.get("/api")
 def api_root() -> dict[str, str]:
     return {
         "message": "Taller 1 IA API",
         "status": "ok",
     }
+
+
+@app.post("/api")
+def api_gateway(
+    endpoint: str,
+    payload: dict[str, Any],
+) -> dict:
+    """Punto de entrada estable para la función Python de Vercel."""
+
+    normalized_endpoint = endpoint.strip("/")
+
+    if normalized_endpoint.startswith("api/"):
+        normalized_endpoint = normalized_endpoint.removeprefix("api/")
+
+    routes = {
+        "n-queens/run": (
+            NQueensRequest,
+            n_queens_service.run,
+        ),
+        "n-queens/experiment": (
+            NQueensExperimentRequest,
+            n_queens_service.experiment,
+        ),
+        "tsp/run": (
+            TSPRequest,
+            tsp_service.run,
+        ),
+        "tsp/experiment": (
+            TSPExperimentRequest,
+            tsp_service.experiment,
+        ),
+        "scheduling/run": (
+            SchedulingRequest,
+            scheduling_service.run,
+        ),
+        "scheduling/experiment": (
+            SchedulingExperimentRequest,
+            scheduling_service.experiment,
+        ),
+        "knapsack/run": (
+            KnapsackRequest,
+            knapsack_service.run,
+        ),
+        "knapsack/experiment": (
+            KnapsackExperimentRequest,
+            knapsack_service.experiment,
+        ),
+    }
+
+    route = routes.get(normalized_endpoint)
+
+    if route is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Operación de API no encontrada.",
+        )
+
+    request_model, handler = route
+    validated_payload = validate_gateway_payload(
+        request_model,
+        payload,
+    )
+
+    try:
+        return handler(validated_payload)
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error),
+        ) from error
 
 
 @app.get("/api/health")

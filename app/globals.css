@@ -708,123 +708,45 @@ button.button {
     var(--accent);
 }
 
-.spider-chart {
+.line-chart {
   width: 100%;
 
-  min-height:
-    360px;
-
   background:
-    radial-gradient(
-      circle at center,
-      rgba(124, 156, 255, 0.12),
-      rgba(0, 0, 0, 0.16) 64%
+    rgba(
+      0,
+      0,
+      0,
+      0.14
     );
 
-  border:
-    1px solid
-    var(--border);
-
   border-radius:
-    18px;
-
-  overflow:
-    visible;
+    14px;
 }
 
-.spider-grid {
-  fill:
-    rgba(124, 156, 255, 0.025);
-
+.axis {
   stroke:
-    rgba(255, 255, 255, 0.11);
+    rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
 
-  stroke-width:
-    1;
+  stroke-width: 1;
 }
 
-.spider-grid-outer {
-  fill:
-    rgba(124, 156, 255, 0.04);
-
-  stroke:
-    rgba(124, 156, 255, 0.38);
-
-  stroke-width:
-    1.5;
-}
-
-.spider-spoke {
-  stroke:
-    rgba(255, 255, 255, 0.09);
-
-  stroke-width:
-    1;
-}
-
-.spider-area-average {
-  fill:
-    rgba(124, 156, 255, 0.13);
-
-  stroke:
-    var(--accent);
-
-  stroke-width:
-    2;
-
-  stroke-linejoin:
-    round;
-}
-
-.spider-area-best {
-  fill:
-    rgba(83, 224, 192, 0.14);
-
+.best-line {
   stroke:
     var(--accent-2);
 
-  stroke-width:
-    2.5;
-
-  stroke-linejoin:
-    round;
+  stroke-width: 3;
 }
 
-.spider-point {
+.average-line {
   stroke:
-    #07111f;
-
-  stroke-width:
-    1;
-}
-
-.spider-point-average {
-  fill:
     var(--accent);
 
-  opacity:
-    0.86;
-}
-
-.spider-point-best {
-  fill:
-    var(--accent-2);
-}
-
-.spider-label {
-  fill:
-    var(--muted);
-
-  font-size:
-    11px;
-
-  font-weight:
-    700;
-}
-
-.spider-center {
-  fill:
-    var(--text);
+  stroke-width: 2;
 
   opacity:
     0.72;
@@ -835,12 +757,6 @@ button.button {
 
   justify-content:
     space-between;
-
-  gap:
-    8px 18px;
-
-  flex-wrap:
-    wrap;
 
   color:
     var(--muted);
