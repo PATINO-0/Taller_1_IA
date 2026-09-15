@@ -23,6 +23,9 @@ from backend.tsp.tsp_service import TSPService
 app = FastAPI(
     title="Taller 1 - Inteligencia Artificial",
     version="1.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
     description=(
         "API de algoritmos genéticos para N-Reinas, "
         "TSP, horarios y mochila."
@@ -31,7 +34,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

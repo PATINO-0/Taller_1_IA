@@ -1,12 +1,27 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
-export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, init);
+export async function postJson<TResponse>(
+  path: string,
+  body: unknown,
+): Promise<TResponse> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
 
   if (!response.ok) {
-    throw new Error(`Error de API: ${response.status}`);
+    const error = await response.json().catch(() => ({
+      detail: "Error inesperado",
+    }));
+
+    throw new Error(
+      error.detail ?? "No fue posible ejecutar el algoritmo.",
+    );
   }
 
-  return (await response.json()) as T;
+  return response.json() as Promise<TResponse>;
 }
 

@@ -1,8 +1,12 @@
 type ErrorMessageProps = {
-  message: string;
+  message: string | null;
 };
 
-export default function ErrorMessage({ message }: ErrorMessageProps) {
-  return <p role="alert">{message}</p>;
+export function ErrorMessage({ message }: ErrorMessageProps) {
+  if (!message) {
+    return null;
+  }
+
+  return <div className="error-box">{message}</div>;
 }
 

@@ -1,13 +1,15 @@
 type MetricCardProps = {
   label: string;
   value: string | number;
+  help?: string;
 };
 
-export default function MetricCard({ label, value }: MetricCardProps) {
+export function MetricCard({ label, value, help }: MetricCardProps) {
   return (
-    <article>
-      <h2>{label}</h2>
-      <p>{value}</p>
+    <article className="metric-card">
+      <span>{label}</span>
+      <strong>{value}</strong>
+      {help ? <small>{help}</small> : null}
     </article>
   );
 }

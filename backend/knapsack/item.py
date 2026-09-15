@@ -1,2 +1,11 @@
-"""Modelo de dominio para un objeto de la mochila."""
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Item:
+    """Objeto candidato para la mochila."""
+
+    name: str
+    weight: int
+    value: int
 

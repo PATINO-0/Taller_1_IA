@@ -1,16 +1,29 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+
 import "./globals.css";
 
+import { Navigation } from "@/components/Navigation";
+
 export const metadata: Metadata = {
-  title: "Taller de inteligencia artificial",
-  description: "Aplicación de algoritmos genéticos",
+  title: "Taller 1 | Algoritmos Genéticos",
+  description:
+    "Laboratorio web de algoritmos genéticos aplicado a cuatro problemas de optimización.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <Navigation />
+        <main>{children}</main>
+        <footer className="footer">
+          Taller 1 · Inteligencia Artificial · Algoritmos Genéticos
+        </footer>
+      </body>
     </html>
   );
 }
